@@ -2,7 +2,7 @@ import os
 from yt_dlp import YoutubeDL
 import whisper
 
-url = "https://www.youtube.com/watch?v=2EGzAPhz2nE"
+url = "https://www.youtube.com/watch?v=zhCRX3B7qwY"
 
 OUTPUT_DIR = "downloads"
 os.makedirs(OUTPUT_DIR, exist_ok=True)
