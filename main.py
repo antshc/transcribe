@@ -22,20 +22,17 @@ url = "https://www.youtube.com/watch?v=2EGzAPhz2nE"
 @click.command()
 @click.option("--repo", required=True, help="Github Repository Name")
 @click.option("--token", required=True, help="Github Personal Access Token")
-@click.argument(
-    "filepath", type=click.Path(exists=True, dir_okay=False, path_type=pathlib.Path)
-)
-def main(repo: str, token: str, filepath: pathlib.Path) -> None:
+def main(repo: str, token: str) -> None:
     """Upload the file `filepath` to a GitHub repo using small helper functions."""
-    
-    audio_path = download_audio(url, "downloads")
+    output_dir = "downloads"
+    audio_path = download_audio(url, output_dir)
     print("Audio saved to:", audio_path)
-    
-    srt_path = transcribe_and_save_srt(audio_path, model_name="base", output_dir=OUTPUT_DIR)
+
+    srt_path = transcribe_and_save_srt(audio_path, model_name="base", output_dir=output_dir)
     print("SRT saved to:", srt_path)
 
-    upload_file_to_repo(repo, token, filepath)
-    print(f"Uploaded {filepath} to repository {repo}.")
+    upload_file_to_repo(repo, token, audio_path)
+    print(f"Uploaded {audio_path} to repository {repo}.")
 
 if __name__ == "__main__":
     main()

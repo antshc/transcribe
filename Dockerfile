@@ -12,4 +12,5 @@ COPY . /app/.
 RUN mkdir -p /app/downloads
 
 # Default command
-CMD ["python", "main.py"]
+ENTRYPOINT ["python", "main.py"]
+CMD []

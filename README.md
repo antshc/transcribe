@@ -11,7 +11,7 @@ pip install click httpx
 ````
 docker build -t youtube-whisper .
 docker run --rm -v "%cd%/downloads:/app/downloads" youtube-whisper
-
+docker run --rm -v "%cd%/downloads:/app/downloads" youtube-whisper --repo antshc/youtube-transcripts --token github_pat_xxxxxx
 ````
 
 ## Ubuntu wsl
