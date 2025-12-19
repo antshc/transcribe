@@ -21,9 +21,12 @@ def write_srt(segments, srt_path: str) -> None:
 
 def transcribe_and_save_srt(audio_path: str, model_name: str = "base", output_dir: str = "downloads") -> str:
     os.makedirs(output_dir, exist_ok=True)
+    base_name, _ = os.path.splitext(os.path.basename(audio_path))
+    transcribe_name = f"{base_name}.srt"
+    srt_path = os.path.join(output_dir, transcribe_name)
+    if os.path.exists(srt_path):
+        return srt_path
     model = whisper.load_model(model_name)
     result = model.transcribe(audio_path)
-    base_name, _ = os.path.splitext(os.path.basename(audio_path))
-    srt_path = os.path.join(output_dir, f"{base_name}.srt")
     write_srt(result["segments"], srt_path)
     return srt_path

@@ -31,8 +31,8 @@ def main(repo: str, token: str) -> None:
     srt_path = transcribe_and_save_srt(audio_path, model_name="base", output_dir=output_dir)
     print("SRT saved to:", srt_path)
 
-    upload_file_to_repo(repo, token, audio_path)
-    print(f"Uploaded {audio_path} to repository {repo}.")
+    upload_file_to_repo(repo, token, pathlib.Path(srt_path))
+    print(f"Uploaded {srt_path} to repository {repo}.")
 
 if __name__ == "__main__":
     main()
