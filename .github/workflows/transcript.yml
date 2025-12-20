@@ -6,10 +6,6 @@ on:
       url:
         description: 'Youtube URL'
         required: true
-      lang:
-        description: 'Language code (optional, e.g. en, cs, uk)'
-        required: false
-        default: ''
 
 jobs:
   build:
@@ -20,8 +16,4 @@ jobs:
 
       - name: Run transcript
         run: |
-          lang="${{ github.event.inputs.lang }}"
-          if [ -n "${lang}" ]; then
-            lang="--lang ${lang}"
-          fi
-          docker run --rm khdevnet/ytt:latest --url "${{ github.event.inputs.url }}" --repo antshc/youtube-transcripts --token "${{ secrets.GIT_HUB_PAT }}" --username "${{ secrets.YOUTUBE_USERNAME }}" --password "${{ secrets.YOUTUBE_PASSWORD }}" 
+          docker run --rm khdevnet/ytt:latest --url "${{ github.event.inputs.url }}" --repo antshc/youtube-transcripts --token "${{ secrets.GIT_HUB_PAT }}"
