@@ -20,4 +20,8 @@ jobs:
 
       - name: Run transcript
         run: |
-          docker run --rm khdevnet/ytt:latest --url ${{ github.event.inputs.url }} --lang ${{ github.event.inputs.lang }} --repo antshc/youtube-transcripts --token ${{ secrets.GIT_HUB_PAT }}
+          lang="${{ github.event.inputs.lang }}"
+          if [ -n "${lang}" ]; then
+            lang="--lang ${lang}"
+          fi
+          docker run --rm khdevnet/ytt:latest --url ${{ github.event.inputs.url }} ${lang} --repo antshc/youtube-transcripts --token ${{ secrets.GIT_HUB_PAT }}
