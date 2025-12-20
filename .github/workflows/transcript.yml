@@ -24,4 +24,4 @@ jobs:
           if [ -n "${lang}" ]; then
             lang="--lang ${lang}"
           fi
-          docker run --rm khdevnet/ytt:latest --url ${{ github.event.inputs.url }} ${lang} --repo antshc/youtube-transcripts --token ${{ secrets.GIT_HUB_PAT }}
+          docker run --rm khdevnet/ytt:latest --url "${{ github.event.inputs.url }}" "${lang}" --repo antshc/youtube-transcripts --token "${{ secrets.GIT_HUB_PAT }}" --username "${{ secrets.YOUTUBE_USERNAME }}" --password "${{ secrets.YOUTUBE_PASSWORD }}" 
