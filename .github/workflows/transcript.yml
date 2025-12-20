@@ -1,0 +1,27 @@
+name: Transcribe Youtube Video
+
+on:
+  workflow_dispatch:
+    inputs:
+      url:
+        description: 'Youtube URL'
+        required: true
+      lang:
+        description: 'Language code (optional, e.g. en, cs, uk)'
+        required: false
+        default: ''
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run transcript
+        run: |
+          lang="${{ github.event.inputs.lang }}"
+          if [ -n "${lang}" ]; then
+            lang="--lang ${lang}"
+          fi
+          docker run --rm khdevnet/ytt:latest --url ${{ github.event.inputs.url }} ${lang} --repo antshc/youtube-transcripts --token ${{ secrets.GIT_HUB_PAT }}
