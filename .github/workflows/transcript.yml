@@ -1,4 +1,4 @@
-name: Docker Image CI
+name: Transcribe Youtube Video
 
 on:
   workflow_dispatch:
