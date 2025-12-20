@@ -1,0 +1,23 @@
+name: Docker Image CI
+
+on:
+  workflow_dispatch:
+    inputs:
+      url:
+        description: 'Youtube URL'
+        required: true
+      lang:
+        description: 'Language code (optional, e.g. en, cs, uk)'
+        required: false
+        default: ''
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run transcript
+        run: |
+          docker run --rm khdevnet/ytt:latest --url ${{ github.event.inputs.url }} --lang ${{ github.event.inputs.lang }} --repo antshc/youtube-transcripts --token ${{ secrets.GIT_HUB_PAT }}
