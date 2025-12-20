@@ -16,13 +16,11 @@ from github import (
 from downloader import download_audio
 from transcriber import transcribe_and_save_srt
 
-url = "https://www.youtube.com/watch?v=2EGzAPhz2nE"
-
-
 @click.command()
+@click.option("--url", required=True, help="YouTube URL")
 @click.option("--repo", required=True, help="Github Repository Name")
 @click.option("--token", required=True, help="Github Personal Access Token")
-def main(repo: str, token: str) -> None:
+def main(url: str, repo: str, token: str) -> None:
     """Upload the file `filepath` to a GitHub repo using small helper functions."""
     output_dir = "downloads"
     audio_path = download_audio(url, output_dir)
