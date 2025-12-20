@@ -18,15 +18,15 @@ from transcriber import transcribe_and_save_srt
 
 @click.command()
 @click.option("--url", required=True, help="YouTube URL")
+@click.option("--lang", required=False, help="Language for transcription")
 @click.option("--repo", required=True, help="Github Repository Name")
 @click.option("--token", required=True, help="Github Personal Access Token")
-def main(url: str, repo: str, token: str) -> None:
-    """Upload the file `filepath` to a GitHub repo using small helper functions."""
+def main(url: str, lang: str, repo: str, token: str) -> None:
     output_dir = "downloads"
     audio_path = download_audio(url, output_dir)
     print("Audio saved to:", audio_path)
 
-    srt_path = transcribe_and_save_srt(audio_path, model_name="base", output_dir=output_dir)
+    srt_path = transcribe_and_save_srt(audio_path, model_name="base", output_dir=output_dir, language=lang)
     print("SRT saved to:", srt_path)
 
     upload_file_to_repo(repo, token, pathlib.Path(srt_path))

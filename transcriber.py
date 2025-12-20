@@ -1,4 +1,6 @@
 import os
+from typing import Optional
+
 import whisper
 
 def srt_timestamp(seconds: float) -> str:
@@ -19,7 +21,12 @@ def write_srt(segments, srt_path: str) -> None:
             text = (seg.get("text") or "").strip()
             f.write(f"{i}\n{start} --> {end}\n{text}\n\n")
 
-def transcribe_and_save_srt(audio_path: str, model_name: str = "base", output_dir: str = "downloads") -> str:
+def transcribe_and_save_srt(
+    audio_path: str,
+    model_name: str = "base",
+    output_dir: str = "downloads",
+    language: Optional[str] = None,
+) -> str:
     os.makedirs(output_dir, exist_ok=True)
     base_name, _ = os.path.splitext(os.path.basename(audio_path))
     transcribe_name = f"{base_name}.srt"
@@ -27,6 +34,9 @@ def transcribe_and_save_srt(audio_path: str, model_name: str = "base", output_di
     if os.path.exists(srt_path):
         return srt_path
     model = whisper.load_model(model_name)
-    result = model.transcribe(audio_path)
+    transcribe_kwargs: dict[str, str] = {}
+    if language is not None:
+        transcribe_kwargs["language"] = language
+    result = model.transcribe(audio_path, **transcribe_kwargs)
     write_srt(result["segments"], srt_path)
     return srt_path
