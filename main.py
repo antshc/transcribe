@@ -18,12 +18,14 @@ from transcriber import transcribe_and_save_srt
 
 @click.command()
 @click.option("--url", required=True, help="YouTube URL")
+@click.option("--username", required=True, help="YouTube username")
+@click.option("--password", required=True, help="YouTube password")
 @click.option("--lang", required=False, help="Language for transcription")
 @click.option("--repo", required=True, help="Github Repository Name")
 @click.option("--token", required=True, help="Github Personal Access Token")
-def main(url: str, lang: str, repo: str, token: str) -> None:
+def main(url: str, username: str, password: str, lang: str, repo: str, token: str) -> None:
     output_dir = "downloads"
-    audio_path = download_audio(url, output_dir)
+    audio_path = download_audio(url, username=username, password=password, output_dir=output_dir)
     print("Audio saved to:", audio_path)
 
     srt_path = transcribe_and_save_srt(audio_path, model_name="base", output_dir=output_dir, language=lang)
