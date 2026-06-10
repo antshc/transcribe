@@ -1,4 +1,4 @@
-# youtube-transcript
+# transcribe
 ````
 sudo apt install -y python3-venv python3-full
 sudo apt install python3-pip
