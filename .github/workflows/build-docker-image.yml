@@ -18,6 +18,6 @@ jobs:
         username: ${{ secrets.DOCKER_HUB_USERNAME }}
         password: ${{ secrets.DOCKER_HUB_PASSWORD }}
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag khdevnet/ytt:latest
+      run: docker build ytt/ --file ytt/Dockerfile --tag khdevnet/ytt:latest
     - name: Push the Docker image
       run: docker push khdevnet/ytt:latest

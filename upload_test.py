@@ -10,11 +10,11 @@ import pathlib
 
 import click
 
-from github import (
+from ytt.github import (
     upload_file_to_repo
 )
-from downloader import download_audio
-from transcriber import transcribe_and_save_srt
+from ytt.downloader import download_audio
+from ytt.transcriber import transcribe_and_save_srt
 
 url = "https://www.youtube.com/watch?v=2EGzAPhz2nE"
 
