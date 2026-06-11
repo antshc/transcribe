@@ -54,7 +54,9 @@ docker build . --file Dockerfile --tag khdevnet/ytt:latest
 ### Minimal (public video, no cookies)
 
 ```bash
-docker run --rm khdevnet/ytt:latest \
+docker run --rm \
+  -v "$(pwd)/downloads:/app/downloads" \
+  khdevnet/ytt:latest \
   --url "https://www.youtube.com/watch?v=jNQXAC9IVRw" \
   --repo owner/repo-name \
   --token YOUR_GITHUB_PAT
@@ -62,10 +64,11 @@ docker run --rm khdevnet/ytt:latest \
 
 ### With cookies.txt (authenticated / members-only)
 
-Mount the cookies file into the container:
+Mount both the cookies file and the downloads folder:
 
 ```bash
 docker run --rm \
+  -v "$(pwd)/downloads:/app/downloads" \
   -v "$(pwd)/cookies.txt:/app/cookies.txt:ro" \
   khdevnet/ytt:latest \
   --url "https://www.youtube.com/watch?v=VIDEO_ID" \
@@ -77,7 +80,9 @@ docker run --rm \
 ### With language hint
 
 ```bash
-docker run --rm khdevnet/ytt:latest \
+docker run --rm \
+  -v "$(pwd)/downloads:/app/downloads" \
+  khdevnet/ytt:latest \
   --url "https://www.youtube.com/watch?v=VIDEO_ID" \
   --repo owner/repo-name \
   --token YOUR_GITHUB_PAT \
