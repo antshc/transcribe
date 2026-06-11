@@ -6,6 +6,10 @@ on:
       url:
         description: 'Youtube URL'
         required: true
+      lang:
+        description: 'Language code for Whisper transcription (e.g. en, uk) — leave blank for auto-detect'
+        required: false
+        default: ''
 
 jobs:
   build:
@@ -16,4 +20,8 @@ jobs:
 
       - name: Run transcript
         run: |
-          docker run --rm khdevnet/ytt:latest --url "${{ github.event.inputs.url }}" --repo antshc/youtube-transcripts --token "${{ secrets.GIT_HUB_PAT }}"
+          docker run --rm khdevnet/ytt:latest \
+            --url "${{ github.event.inputs.url }}" \
+            --repo antshc/youtube-transcripts \
+            --token "${{ secrets.GIT_HUB_PAT }}" \
+            ${{ github.event.inputs.lang != '' && format('--lang {0}', github.event.inputs.lang) || '' }}
