@@ -54,12 +54,14 @@ docker build . --file Dockerfile --tag khdevnet/ytt:latest
 ### Minimal (public video, no cookies)
 
 ```bash
-docker run --rm \
-  -v "$(pwd)/downloads:/app/downloads" \
+# Ukrainian lang - uk
+MSYS_NO_PATHCONV=1 docker run --rm \
+  -v "$(pwd -W)/downloads:/app/downloads" \
   khdevnet/ytt:latest \
-  --url "https://www.youtube.com/watch?v=QMMOfhsiZiU" \
+  --url "https://www.youtube.com/watch?v=5E7kBOH9owI" \
   --repo antshc/youtube-transcripts \
-  --token $GITHUB_ANTSHC_PAT
+  --token $GITHUB_ANTSHC_PAT \
+  --lang en
 ```
 
 ### With cookies.txt (authenticated / members-only)
@@ -67,9 +69,9 @@ docker run --rm \
 Mount both the cookies file and the downloads folder:
 
 ```bash
-docker run --rm \
-  -v "$(pwd)/downloads:/app/downloads" \
-  -v "$(pwd)/cookies.txt:/app/cookies.txt:ro" \
+MSYS_NO_PATHCONV=1 docker run --rm \
+  -v "$(pwd -W)/downloads:/app/downloads" \
+  -v "$(pwd -W)/cookies.txt:/app/cookies.txt:ro" \
   khdevnet/ytt:latest \
   --url "https://www.youtube.com/watch?v=VIDEO_ID" \
   --repo owner/repo-name \
@@ -80,13 +82,13 @@ docker run --rm \
 ### With language hint
 
 ```bash
-docker run --rm \
-  -v "$(pwd)/downloads:/app/downloads" \
+MSYS_NO_PATHCONV=1 docker run --rm \
+  -v "$(pwd -W)/downloads:/app/downloads" \
   khdevnet/ytt:latest \
   --url "https://www.youtube.com/watch?v=VIDEO_ID" \
   --repo owner/repo-name \
   --token YOUR_GITHUB_PAT \
-  --lang en
+  --lang uk
 ```
 
 ---
