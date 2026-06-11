@@ -22,8 +22,8 @@ _Avoid_: recognition, conversion
 **Screenshot**: A single video frame extracted at a specific timestamp, produced by ffmpeg from a downloaded video file.
 _Avoid_: frame, capture, image
 
-**Cookies**: Chrome's browser cookie store, read directly by yt-dlp on Windows via `--cookies-from-browser chrome`. Used to authenticate yt-dlp requests to YouTube.
-_Avoid_: session, credentials, auth token, cookies.txt
+**Cookies**: A `cookies.txt` file exported from the browser once and supplied to yt-dlp for authenticated downloads. Used to authenticate yt-dlp requests to YouTube for members-only, age-gated, or rate-limited content.
+_Avoid_: session, credentials, auth token, browser profile
 
 **Output directory**: The local directory where Audio files and Transcripts are written. Exposed as a volume mount in Docker deployments.
 _Avoid_: downloads folder, destination
@@ -35,4 +35,4 @@ _Avoid_: downloads folder, destination
 > **Dev**: What about the `downloaderv2.py` file — does that replace the original?
 > **Domain expert**: Not yet. v2 adds video Download and Screenshot support on top of the audio-only path. The two live side by side until the CLI is unified.
 > **Dev**: And Cookies — the user has to supply those?
-> **Domain expert**: Yes, if YouTube rate-limits or requires login. The user exports their browser Cookies once and mounts the file into the container.
+> **Domain expert**: Yes, if YouTube rate-limits or requires login. The user exports their browser Cookies to a `cookies.txt` file once and mounts it into the container.

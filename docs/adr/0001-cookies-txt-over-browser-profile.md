@@ -1,10 +1,10 @@
-# Use --cookies-from-browser chrome for YouTube authentication
+# Use cookies.txt for YouTube authentication
 
-The youtube-download script runs as a native Windows Python process (no Docker container). On Windows, yt-dlp can read Chrome's cookie store directly via the Windows DPAPI (`--cookies-from-browser chrome`), requiring no manual cookie export from the user.
+The youtube-download script needs to authenticate with YouTube for members-only, age-gated, and rate-limited content. We use a `cookies.txt` file exported once from the browser and supplied to yt-dlp via `--cookies path/to/cookies.txt`.
 
-We use `--cookies-from-browser chrome` because it is transparent: as long as the user is logged into YouTube in Chrome, authenticated downloads succeed with no additional setup.
+`cookies.txt` is portable across host OS types (Windows native, Linux, Docker containers) and requires only a one-time manual export via a browser extension.
 
 ## Considered Options
 
-- `--cookies-from-browser chrome` — zero setup for the user on Windows; not viable inside a Linux Docker container (DPAPI is inaccessible from Linux)
-- `cookies.txt` mount — portable across host OS types, but requires a one-time manual export via a browser extension; still the correct choice for Docker deployments
+- `cookies.txt` (**chosen**) — portable; works on Windows, Linux, and inside Docker containers; requires a one-time manual export via a browser extension (e.g. "Get cookies.txt LOCALLY")
+- `--cookies-from-browser chrome` (**rejected**) — reads Chrome's cookie store directly via Windows DPAPI with no manual export step; unsuitable because DPAPI is inaccessible from Linux and Docker containers, making it non-portable for the deployment target
