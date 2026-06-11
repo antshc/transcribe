@@ -30,6 +30,8 @@ For videos that require a YouTube account (members-only, age-gated, etc.) you mu
 3. Navigate to `https://www.youtube.com` and export cookies using the extension.
 4. Save the exported file as `cookies.txt` in the `downloader/` directory.
 
+> ⚠️ `cookies.txt` contains your YouTube session credentials — it is listed in `.gitignore` and must **never** be committed.
+
 Public videos work without a cookies.txt file, but the argument is always passed to yt-dlp (yt-dlp silently ignores a missing file for public content).
 
 ---
