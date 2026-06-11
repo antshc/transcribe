@@ -9,6 +9,7 @@ Standalone CLI tool that downloads audio from a YouTube URL using **yt-dlp** wit
 | Requirement | Notes |
 |---|---|
 | **Python 3.10+** | [python.org/downloads](https://www.python.org/downloads/) — add to PATH during install |
+| **Node.js 18+** | Required by yt-dlp to solve YouTube's JS challenge; [nodejs.org](https://nodejs.org/) or `winget install OpenJS.NodeJS` |
 | **ffmpeg** | Required by yt-dlp for audio post-processing |
 | **cookies.txt** | Required for authenticated downloads (members-only, age-gated videos) |
 
@@ -28,6 +29,8 @@ For videos that require a YouTube account (members-only, age-gated, etc.) you mu
 2. Install the [cookies.txt browser extension](https://github.com/kairi003/Get-cookies.txt-LOCALLY) (available for Chrome and Firefox).
 3. Navigate to `https://www.youtube.com` and export cookies using the extension.
 4. Save the exported file as `cookies.txt` in the `downloader/` directory.
+
+> ⚠️ `cookies.txt` contains your YouTube session credentials — it is listed in `.gitignore` and must **never** be committed.
 
 Public videos work without a cookies.txt file, but the argument is always passed to yt-dlp (yt-dlp silently ignores a missing file for public content).
 
@@ -118,5 +121,6 @@ The file is **not** re-downloaded.
 |---|---|
 | `'ffmpeg' is not recognized` | Run `winget install --id Gyan.FFmpeg -e` and restart the terminal |
 | `ERROR: Requested format is not available` | yt-dlp version mismatch — run `pip install -U yt-dlp` |
+| `WARNING: n challenge solving failed` | Install Node.js (`winget install OpenJS.NodeJS`) and restart the terminal; yt-dlp uses it to solve YouTube's JS challenge |
 | `ERROR: Sign in to confirm you're not a bot` | Export a fresh `cookies.txt` from your browser and place it in the `downloader/` directory |
 | Playlist URL downloads only one video | Intended — the script is single-video only (playlist URLs are silently clamped) |

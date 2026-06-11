@@ -6,7 +6,7 @@ Usage:
 
 Features:
 - Authenticates via a cookies.txt file — export once from your browser using a browser extension.
-- Downloads audio in opus ≤96 kbps, falling back to best available audio.
+- Downloads audio in opus ≤96 kbps, falling back to best available audio or combined format.
 - Idempotent: skips the download when the output file already exists.
 - Windows-safe filenames via restrictfilenames=True.
 - Rejects playlist URLs — downloads only the single specified video.
@@ -45,12 +45,19 @@ def download_audio(url: str, output_dir: str = OUTPUT_DIR, cookies_file: str = "
     os.makedirs(output_dir, exist_ok=True)
 
     ydl_opts = {
-        "format": "bestaudio[acodec=opus][abr<=96]/bestaudio",
+        "format": "bestaudio[acodec=opus][abr<=96]/bestaudio/best",
         "outtmpl": os.path.join(output_dir, "%(title)s.%(ext)s"),
         "restrictfilenames": True,
         "noplaylist": True,
         # Authenticate using a cookies.txt file (Netscape format).
         "cookiefile": cookies_file,
+        # Force the standard web client — cookies can otherwise trigger
+        # the web_creator client which exposes no audio/video formats.
+        "extractor_args": {"youtube": {"player_client": ["web"]}},
+        # Enable Node.js for YouTube's n-parameter JS challenge.
+        "js_runtimes": {"node": {}},
+        # Allow yt-dlp to fetch the challenge solver script from GitHub.
+        "remote_components": {"ejs:github"},
     }
 
     with YoutubeDL(ydl_opts) as ydl:
