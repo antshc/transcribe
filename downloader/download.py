@@ -1,11 +1,11 @@
 """
-download.py — standalone CLI audio downloader using yt-dlp with Chrome cookies.
+download.py — standalone CLI audio downloader using yt-dlp with cookies.txt authentication.
 
 Usage:
-    python download.py --url <youtube-url>
+    python download.py --url <youtube-url> [--cookies-file cookies.txt]
 
 Features:
-- Authenticates via Chrome browser cookies (Windows DPAPI) — no manual export needed.
+- Authenticates via a cookies.txt file — export once from your browser using a browser extension.
 - Downloads audio in opus ≤96 kbps, falling back to best available audio.
 - Idempotent: skips the download when the output file already exists.
 - Windows-safe filenames via restrictfilenames=True.
@@ -23,11 +23,11 @@ from yt_dlp import YoutubeDL
 OUTPUT_DIR = "downloads"
 
 
-def download_audio(url: str, output_dir: str = OUTPUT_DIR) -> str:
+def download_audio(url: str, output_dir: str = OUTPUT_DIR, cookies_file: str = "cookies.txt") -> str:
     """Download audio for a YouTube URL to *output_dir*.
 
-    Uses Chrome browser cookies for authentication so no manual cookie export
-    is required.  The function is idempotent: if the predicted output file
+    Reads authentication cookies from *cookies_file* (Netscape/cookies.txt
+    format).  The function is idempotent: if the predicted output file
     already exists it is returned immediately without re-downloading.
 
     Args:
@@ -35,6 +35,8 @@ def download_audio(url: str, output_dir: str = OUTPUT_DIR) -> str:
              single-video downloads (``noplaylist=True``).
         output_dir: Directory where the audio file is saved.  Created
                     automatically when absent.
+        cookies_file: Path to a cookies.txt file used for authentication.
+                      Resolved relative to the current working directory.
 
     Returns:
         Absolute or relative path to the downloaded (or already-existing)
@@ -47,9 +49,8 @@ def download_audio(url: str, output_dir: str = OUTPUT_DIR) -> str:
         "outtmpl": os.path.join(output_dir, "%(title)s.%(ext)s"),
         "restrictfilenames": True,
         "noplaylist": True,
-        # Use Chrome's encrypted cookie store — no cookies.txt needed.
-        # On Windows yt-dlp decrypts via DPAPI automatically.
-        "cookiesfrombrowser": ("chrome",),
+        # Authenticate using a cookies.txt file (Netscape format).
+        "cookiefile": cookies_file,
     }
 
     with YoutubeDL(ydl_opts) as ydl:
@@ -65,7 +66,7 @@ def download_audio(url: str, output_dir: str = OUTPUT_DIR) -> str:
 def main() -> None:
     parser = argparse.ArgumentParser(
         description=(
-            "Download audio from a YouTube URL using Chrome cookies. "
+            "Download audio from a YouTube URL using a cookies.txt file for authentication. "
             "Output is written to the downloads/ directory."
         )
     )
@@ -75,10 +76,16 @@ def main() -> None:
         metavar="URL",
         help="YouTube video URL to download audio from.",
     )
+    parser.add_argument(
+        "--cookies-file",
+        default="cookies.txt",
+        metavar="PATH",
+        help="Path to a cookies.txt file for authentication (default: cookies.txt).",
+    )
     args = parser.parse_args()
 
     try:
-        path = download_audio(args.url)
+        path = download_audio(args.url, cookies_file=args.cookies_file)
         print(f"Downloaded: {path}")
     except Exception as exc:  # noqa: BLE001
         print(f"Error: {exc}", file=sys.stderr)
