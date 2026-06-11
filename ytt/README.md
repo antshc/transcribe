@@ -57,9 +57,9 @@ docker build . --file Dockerfile --tag khdevnet/ytt:latest
 docker run --rm \
   -v "$(pwd)/downloads:/app/downloads" \
   khdevnet/ytt:latest \
-  --url "https://www.youtube.com/watch?v=jNQXAC9IVRw" \
-  --repo owner/repo-name \
-  --token YOUR_GITHUB_PAT
+  --url "https://www.youtube.com/watch?v=QMMOfhsiZiU" \
+  --repo antshc/youtube-transcripts \
+  --token $GITHUB_ANTSHC_PAT
 ```
 
 ### With cookies.txt (authenticated / members-only)
