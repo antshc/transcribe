@@ -21,9 +21,10 @@ from transcriber import transcribe_and_save_srt
 @click.option("--lang", required=False, help="Language for transcription")
 @click.option("--repo", required=True, help="Github Repository Name")
 @click.option("--token", required=True, help="Github Personal Access Token")
-def main(url: str, lang: str, repo: str, token: str) -> None:
+@click.option("--cookies-file", default="cookies.txt", show_default=True, help="Path to cookies.txt for authentication")
+def main(url: str, lang: str, repo: str, token: str, cookies_file: str) -> None:
     output_dir = "downloads"
-    audio_path = download_audio(url, output_dir=output_dir)
+    audio_path = download_audio(url, output_dir=output_dir, cookies_file=cookies_file)
     print("Audio saved to:", audio_path)
 
     srt_path = transcribe_and_save_srt(audio_path, model_name="base", output_dir=output_dir, language=lang)
