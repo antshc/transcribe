@@ -1,4 +1,7 @@
+import glob
 import os
+from pathlib import Path
+
 from yt_dlp import YoutubeDL
 
 def download_audio(url: str, output_dir: str = "downloads", cookies_file: str = "cookies.txt") -> str:
@@ -40,8 +43,10 @@ def download_audio(url: str, output_dir: str = "downloads", cookies_file: str = 
     with YoutubeDL(ydl_opts) as ydl:
         info = ydl.extract_info(url, download=False)
         predicted_path = ydl.prepare_filename(info)
-        if os.path.exists(predicted_path):
-            print(f"Already exists, skipping download: {predicted_path}")
-            return predicted_path
+        stem = Path(predicted_path).stem
+        existing = glob.glob(os.path.join(output_dir, f"{stem}.*"))
+        if existing:
+            print(f"Already exists, skipping download: {existing[0]}")
+            return existing[0]
         info = ydl.extract_info(url, download=True)
         return info["requested_downloads"][0]["filepath"]

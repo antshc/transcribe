@@ -27,7 +27,7 @@ def main(url: str, lang: str, repo: str, token: str, cookies_file: str) -> None:
     audio_path = download_audio(url, output_dir=output_dir, cookies_file=cookies_file)
     print("Audio saved to:", audio_path)
 
-    srt_path = transcribe_and_save_srt(audio_path, model_name="base", output_dir=output_dir, language=lang)
+    srt_path = transcribe_and_save_srt(audio_path, model_name="turbo", output_dir=output_dir, language=lang)
     print("SRT saved to:", srt_path)
 
     upload_file_to_repo(repo, token, pathlib.Path(srt_path))
